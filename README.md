@@ -1,4 +1,5 @@
 # 细说Rust错误处理
+原文地址:[https://github.com/baoyachi/rust-handle-error](https://github.com/baoyachi/rust-handle-error)
 
 
 ## 1. 前言
@@ -717,3 +718,5 @@ impl From<InnerError> for GlobalError {
 
 ## 13. 总结
 好了，经过上面的长篇大论，不知道大家是否明白如何自定义处理Error呢了。大家现在带着之前的已有的问题或困惑，赶紧实战下`Rust`的错误处理吧，大家有疑问或者问题都可以留言我，希望这篇文章对你有帮助。
+
+原文地址:[https://github.com/baoyachi/rust-handle-error](https://github.com/baoyachi/rust-handle-error)
