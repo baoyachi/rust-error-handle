@@ -1,4 +1,6 @@
 # 细说Rust错误处理
+![handle-error](./handle_error.png)
+
 原文地址:[https://github.com/baoyachi/rust-handle-error](https://github.com/baoyachi/rust-handle-error)
 
 
