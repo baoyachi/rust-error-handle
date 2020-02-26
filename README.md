@@ -579,7 +579,6 @@ pub enum Option<T> {
  Ok,那么我们试想下, 利用`Option`能使用`?`语法糖吗？如果能用`?`转换的话，是不是代码结构就更简单了呢？我们尝试下,代码如下：
 
 ```rust
-use serde::export::Formatter;
 
 #[derive(Debug)]
 enum Error {
