@@ -372,9 +372,9 @@ impl From<Utf8Error> for CustomError {
 }
 ```
 
-* 1. `CustomError`为我们实现的**自定义Error**
-* 2. `CustomError`有三个**子类型Error**
-* 3. `CustomError`分别实现了三个**子类型Error** `From`的trait,将其类型包装为**自定义Error**的子类型
+* `CustomError`为我们实现的**自定义Error**
+* `CustomError`有三个**子类型Error**
+* `CustomError`分别实现了三个**子类型Error** `From`的trait,将其类型包装为**自定义Error**的子类型
 
 好了，有了自定义的`CustomError`，那怎么使用呢? 我们看代码：
 
