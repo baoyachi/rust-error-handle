@@ -15,3 +15,9 @@ mod tests {
         println!("{}", read_file(path));
     }
 }
+
+//这是一个示例项目，使用`unit test`替代`main`函数执行
+//fn main() {
+//    let path = "/tmp/dat";
+//    println!("{}", read_file(path));
+//}
