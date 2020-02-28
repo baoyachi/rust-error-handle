@@ -28,7 +28,7 @@ mod tests {
 
     #[test]
     fn test_foo() -> Result<()> {
-        let bar = foo(60)
+        let bar = foo(61)
             .ok_or(Error::OptionError("find `None` in foo() error".to_string()))?;
         assert_eq!("bar", bar);
         Ok(())
