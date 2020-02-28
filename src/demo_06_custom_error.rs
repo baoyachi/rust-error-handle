@@ -25,7 +25,8 @@ enum CustomError {
     Utf8Error(std::str::Utf8Error),
     IoError(std::io::Error),
 }
-impl std::error::Error for CustomError{
+
+impl std::error::Error for CustomError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match &self {
             CustomError::IoError(ref e) => Some(e),
@@ -35,7 +36,7 @@ impl std::error::Error for CustomError{
     }
 }
 
-impl Display for CustomError{
+impl Display for CustomError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match &self {
             CustomError::IoError(ref e) => e.fmt(f),
@@ -68,12 +69,21 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_to_u32() -> std::result::Result<(),CustomError>{
+    fn test_to_u32() -> std::result::Result<(), CustomError> {
         let path = "./dat";
         let v = read_file(path)?;
         let x = to_utf8(v.as_bytes())?;
         let u = to_u32(x)?;
-        assert_eq!(8,u);
+        assert_eq!(8, u);
         Ok(())
     }
 }
+
+//fn main() -> Result<(),CustomError>{
+//    let path = "./dat";
+//    let v = read_file(path)?;
+//    let x = to_utf8(v.as_bytes())?;
+//    let u = to_u32(x)?;
+//    println!("num:{:?}",u);
+//    Ok(())
+//}
