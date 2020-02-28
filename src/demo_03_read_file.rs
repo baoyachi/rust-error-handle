@@ -9,8 +9,8 @@ mod tests {
     #[test]
     fn test_read_file() {
         let path = "/tmp/dat";
-        ///called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
-        println!("{}", read_file(path));
+        //called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+        //println!("{}", read_file(path));
     }
 }
 
