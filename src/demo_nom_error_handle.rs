@@ -2,6 +2,7 @@
 //2. nom parser
 //3. parser time
 
+
 use std::fs;
 use nom::sequence::tuple;
 use nom::character::complete::{digit1, multispace0, multispace1};
@@ -10,8 +11,15 @@ use nom::combinator::map;
 use nom::character::complete::alphanumeric1;
 use time::PrimitiveDateTime;
 
-fn read_file(path: String) {
+fn read_file(path: String) -> Vec<String> {
     let content = fs::read_to_string(path).unwrap();
+    let mut lines = Vec::new();
+    for line in content.lines() {
+        if !line.clone().trim().is_empty() {
+            lines.push(line.to_string())
+        }
+    }
+    lines
 }
 
 fn parser_time(input: &str) -> nom::IResult<&str, (String, String)> {
@@ -46,18 +54,23 @@ fn parser_time(input: &str) -> nom::IResult<&str, (String, String)> {
     ))(input)?;
 
     let time = format!("{}-{}-{} {}:{}:{}", y2, y3, y4, y5, y6, y7);
-    println!("{:?}", time.clone());
     Ok((input, (y1.to_string(), time)))
 }
 
-fn convert_time(key: String, value: String) {
-    let time = PrimitiveDateTime::parse(value, "%F %T").unwrap();
+fn get_time(path: String) -> Vec<(String, PrimitiveDateTime)> {
+    let mut times = Vec::new();
+    for line in read_file(path) {
+        let (_, (key, value)) = parser_time(line.as_str()).unwrap();
+        let time = PrimitiveDateTime::parse(value, "%F %T").unwrap();
+        times.push((key, time))
+    }
+    times
 }
-
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use time::Date;
 
     #[test]
     fn test_parser_time() {
@@ -68,5 +81,15 @@ mod tests {
         assert_eq!(input, "");
         assert_eq!(key, "time");
         assert_eq!(value, "2020-03-01 15:30:22");
+    }
+
+    #[test]
+    fn test_convert_time() {
+        let path = "./time_tpl.file";
+        for (key,value) in get_time(path.to_string()){
+            assert_eq!(key,"time");
+            assert_eq!(value,PrimitiveDateTime::new(date!(2020-03-01), time!(15:30:22)));
+        }
+
     }
 }
