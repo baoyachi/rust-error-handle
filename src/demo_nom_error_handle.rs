@@ -8,6 +8,7 @@ use nom::character::complete::{digit1, multispace0, multispace1};
 use nom::bytes::complete::tag;
 use nom::combinator::map;
 use nom::character::complete::alphanumeric1;
+use time::PrimitiveDateTime;
 
 fn read_file(path: String) {
     let content = fs::read_to_string(path).unwrap();
@@ -34,8 +35,6 @@ fn parser_time(input: &str) -> nom::IResult<&str, (String, String)> {
         multispace0,
     ));
 
-    //(&str, &str, &str, &str, &str, &str, &str, &str, &str, &str, &str, &str, &str, &str, &str, &str)
-
     //time = "2020-03-01 15:30:22"
     let (input, (_, y1, _, _, _, (_, _, y2, _, y3, _, y4, _, y5, _, y6, _, y7, _, _, _, ))) = tuple((
         multispace0,
@@ -51,7 +50,9 @@ fn parser_time(input: &str) -> nom::IResult<&str, (String, String)> {
     Ok((input, (y1.to_string(), time)))
 }
 
-
+fn convert_time(key: String, value: String) {
+    let time = PrimitiveDateTime::parse(value, "%F %T").unwrap();
+}
 
 
 #[cfg(test)]
@@ -63,6 +64,9 @@ mod tests {
         let input = r#"
         time = "2020/03/01 15:30:22"
         "#;
-        println!("{:?}", parser_time(input));
+        let (input, (key, value)) = parser_time(input).unwrap();
+        assert_eq!(input, "");
+        assert_eq!(key, "time");
+        assert_eq!(value, "2020-03-01 15:30:22");
     }
 }
