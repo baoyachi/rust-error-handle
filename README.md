@@ -1,7 +1,7 @@
 # 细说Rust错误处理
 ![handle-error.png](https://github.com/baoyachi/rust-handle-error/raw/master/handle_error.png)
 
-原文地址:[https://github.com/baoyachi/rust-handle-error](https://github.com/baoyachi/rust-handle-error)
+原文地址:[https://github.com/baoyachi/rust-error-handle](https://github.com/baoyachi/rust-error-handle)
 
 
 ## 1. 前言
@@ -723,4 +723,4 @@ impl From<InnerError> for GlobalError {
 
 文中代码详见:[https://github.com/baoyachi/rust-handle-error/tree/master/src](https://github.com/baoyachi/rust-handle-error/tree/master/src)
 
-原文地址:[https://github.com/baoyachi/rust-handle-error](https://github.com/baoyachi/rust-handle-error)
+原文地址:[https://github.com/baoyachi/rust-error-handle](https://github.com/baoyachi/rust-error-handle)
