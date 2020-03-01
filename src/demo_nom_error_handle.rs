@@ -1,8 +1,3 @@
-//1. read file
-//2. nom parser
-//3. parser time
-
-
 use std::fs;
 use nom::sequence::tuple;
 use nom::character::complete::{digit1, multispace0, multispace1};
@@ -11,6 +6,8 @@ use nom::combinator::map;
 use nom::character::complete::alphanumeric1;
 use time::PrimitiveDateTime;
 
+
+//1. read file
 fn read_file(path: String) -> Vec<String> {
     let content = fs::read_to_string(path).unwrap();
     let mut lines = Vec::new();
@@ -22,6 +19,7 @@ fn read_file(path: String) -> Vec<String> {
     lines
 }
 
+//2. nom parser
 fn parser_time(input: &str) -> nom::IResult<&str, (String, String)> {
     //"2020/03/01 15:30:22" or "  2020/03/01 15:30:22       "
     let time_value = tuple((
@@ -57,6 +55,7 @@ fn parser_time(input: &str) -> nom::IResult<&str, (String, String)> {
     Ok((input, (y1.to_string(), time)))
 }
 
+//3. parser time
 fn get_time(path: String) -> Vec<(String, PrimitiveDateTime)> {
     let mut times = Vec::new();
     for line in read_file(path) {
@@ -90,6 +89,5 @@ mod tests {
             assert_eq!(key,"time");
             assert_eq!(value,PrimitiveDateTime::new(date!(2020-03-01), time!(15:30:22)));
         }
-
     }
 }
