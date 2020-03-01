@@ -717,8 +717,12 @@ impl From<InnerError> for GlobalError {
 * [https://doc.rust-lang.org/rust-by-example/error.html](https://doc.rust-lang.org/rust-by-example/error.html)
 * [https://github.com/rust-lang/rust/issues/43301](https://github.com/rust-lang/rust/issues/43301)
 
+## 13 错误处理实战
+这个例子介绍了如何在`https://github.com/Geal/nom`中处理错误，这里就不展开介绍了。
 
-## 13. 总结
+详细见链接：[https://github.com/baoyachi/rust-error-handle/blob/master/src/demo_nom_error_handle.rs](https://github.com/baoyachi/rust-error-handle/blob/master/src/demo_nom_error_handle.rs)
+
+## 14. 总结
 好了，经过上面的长篇大论，不知道大家是否明白如何自定义处理Error呢了。大家现在带着之前的已有的问题或困惑，赶紧实战下`Rust`的错误处理吧，大家有疑问或者问题都可以留言我，希望这篇文章对你有帮助。
 
 文中代码详见:[https://github.com/baoyachi/rust-handle-error/tree/master/src](https://github.com/baoyachi/rust-handle-error/tree/master/src)
