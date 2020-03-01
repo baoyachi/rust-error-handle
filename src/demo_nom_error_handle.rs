@@ -9,7 +9,6 @@ use time::ParseError as TimeParseError;
 use std::io::Error as IoError;
 use std::error::Error as StdError;
 use std::fmt::Display;
-use nom::lib::std::fmt::Formatter;
 use nom::error::ParseError;
 
 pub type Result<I> = std::result::Result<I, Error<I>>;
@@ -84,7 +83,7 @@ impl<I> From<TimeParseError> for Error<I> {
 
 impl<I> From<std::string::String> for Error<I> {
     fn from(s: std::string::String) -> Self {
-        Error::new(ErrorKind::StringError(s.to_string()))
+        Error::new(ErrorKind::StringError(s))
     }
 }
 
@@ -143,7 +142,6 @@ impl<I: std::fmt::Debug> nom::error::ParseError<I> for Error<I> {
         other
     }
 }
-
 
 
 // nom parser:2020/03/01 15:30:22 -> 2020-03-01 15:30:22
