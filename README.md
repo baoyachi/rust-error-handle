@@ -18,7 +18,7 @@
   - [13 错误处理实战](#13-%e9%94%99%e8%af%af%e5%a4%84%e7%90%86%e5%ae%9e%e6%88%98)
   - [14. 总结](#14-%e6%80%bb%e7%bb%93)
 
-![handle-error.png](https://github.com/baoyachi/rust-handle-error/raw/master/handle_error.png)
+![handle-error.png](https://github.com/baoyachi/rust-error-handle/raw/master/handle_error.png)
 
 原文地址:[https://github.com/baoyachi/rust-error-handle](https://github.com/baoyachi/rust-error-handle)
 
