@@ -94,6 +94,16 @@ impl<I> From<IoError> for Error<I> {
     }
 }
 
+impl<'a> From<Error<&'a str>> for Error<()> {
+    fn from(s: Error<&'a str>) -> Self {
+        Error::new(ErrorKind::StringError(format!(
+            "kind:{:?},error:{:?}",
+            s.kind, s.error
+        )))
+    }
+}
+
+
 impl<I: std::fmt::Debug> From<nom::Err<(I, nom::error::ErrorKind)>> for Error<I> {
     fn from(i: nom::Err<(I, nom::error::ErrorKind)>) -> Self {
         match i {
@@ -193,28 +203,30 @@ mod tests {
     use time::Date;
 
     #[test]
-    fn test_parser_time() {
+    fn test_parser_time() -> Result<()>{
         let input = r#"
         time = "2020/03/01 15:30:22"
         "#;
-        let (input, (key, value)) = parser_time(input).unwrap();
+        let (input, (key, value)) = parser_time(input)?;
         assert_eq!(input, "");
         assert_eq!(key, "time");
         assert_eq!(value, "2020-03-01 15:30:22");
+        Ok(())
     }
 
     #[test]
-    fn test_convert_time() {
+    fn test_convert_time() -> Result<()>{
         let path = "./time_tpl.file";
-        let content = fs::read_to_string(path).unwrap();
+        let content = fs::read_to_string(path)?;
         for line in content.clone().lines().into_iter() {
             if line.clone().trim().is_empty() {
                 continue;
             }
-            let (input, (key, value)) = get_time(line).unwrap();
+            let (input, (key, value)) = get_time(line)?;
             assert_eq!(input, "");
             assert_eq!(key, "time");
             assert_eq!(value, PrimitiveDateTime::new(date!(2020-03-01), time!(15:30:22)));
         }
+        Ok(())
     }
 }
