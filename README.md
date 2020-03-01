@@ -1,4 +1,6 @@
 # 细说Rust错误处理
+[TOC]
+
 ![handle-error.png](https://github.com/baoyachi/rust-handle-error/raw/master/handle_error.png)
 
 原文地址:[https://github.com/baoyachi/rust-error-handle](https://github.com/baoyachi/rust-error-handle)
