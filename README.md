@@ -1,5 +1,31 @@
 # 细说Rust错误处理
-[TOC]
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [细说Rust错误处理](#%e7%bb%86%e8%af%b4rust%e9%94%99%e8%af%af%e5%a4%84%e7%90%86)
+  - [1. 前言](#1-%e5%89%8d%e8%a8%80)
+  - [2. 背景](#2-%e8%83%8c%e6%99%af)
+  - [3. unwrap的危害!](#3-unwrap%e7%9a%84%e5%8d%b1%e5%ae%b3)
+  - [4. 对比语言处理错误](#4-%e5%af%b9%e6%af%94%e8%af%ad%e8%a8%80%e5%a4%84%e7%90%86%e9%94%99%e8%af%af)
+    - [4.1 golang的错误处理演示](#41-golang%e7%9a%84%e9%94%99%e8%af%af%e5%a4%84%e7%90%86%e6%bc%94%e7%a4%ba)
+    - [4.2 Rust 错误处理示例](#42-rust-%e9%94%99%e8%af%af%e5%a4%84%e7%90%86%e7%a4%ba%e4%be%8b)
+  - [5. Rust中的错误处理](#5-rust%e4%b8%ad%e7%9a%84%e9%94%99%e8%af%af%e5%a4%84%e7%90%86)
+  - [6. 自定义Error转换:From](#6-%e8%87%aa%e5%ae%9a%e4%b9%89error%e8%bd%ac%e6%8d%a2from)
+  - [7. 重命名Result](#7-%e9%87%8d%e5%91%bd%e5%90%8dresult)
+  - [8. Option转换](#8-option%e8%bd%ac%e6%8d%a2)
+  - [9. 避免unwrap()](#9-%e9%81%bf%e5%85%8dunwrap)
+  - [10. 自定义Error同级转换](#10-%e8%87%aa%e5%ae%9a%e4%b9%89error%e5%90%8c%e7%ba%a7%e8%bd%ac%e6%8d%a2)
+  - [11. Error常见开源库](#11-error%e5%b8%b8%e8%a7%81%e5%bc%80%e6%ba%90%e5%ba%93)
+  - [12. 参考链接](#12-%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5)
+  - [13 错误处理实战](#13-%e9%94%99%e8%af%af%e5%a4%84%e7%90%86%e5%ae%9e%e6%88%98)
+  - [14. 总结](#14-%e6%80%bb%e7%bb%93)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
+
 
 ![handle-error.png](https://github.com/baoyachi/rust-handle-error/raw/master/handle_error.png)
 
