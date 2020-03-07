@@ -583,7 +583,7 @@ fn foo() -> IResult<String, u32> {
 使用重命名类型的`Result`，使得我们错误类型统一，方便处理。在实际项目中，可以大量看到这种例子的存在。
 
 ## 8. Option转换 
-我们知道，在`Rust`中，需要使用到`unwrap()`的方法的对象有`Result`,`Option`两个对象。我们看下`Option`的大致结构：
+我们知道，在`Rust`中，需要使用到`unwrap()`的方法的对象有`Result`,`Option`对象。我们看下`Option`的大致结构：
 ```rust
 pub enum Option<T> {
     /// No value
