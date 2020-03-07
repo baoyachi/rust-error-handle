@@ -196,13 +196,16 @@ pub trait Error: Debug + Display {
 * `description()`在文档介绍中，尽管使用它不会导致编译警告，但新代码应该实现`impl Display` ，新`impl`的可以省略，不用实现该方法, 要获取字符串形式的错误描述，请使用`to_string()`。
 * `cause()`在**1.33.0**被抛弃，取而代之使用`source()`方法，新`impl`的不用实现该方法。
 * `source()`此错误的低级源，如果内部有错误类型`Err`返回：`Some(e)`,如果没有返回：`None`。
+  
   * 如果当前`Error`是低级别的`Error`,并没有**子Error**,需要返回`None`。介于其本身默认有返回值`None`，可以**不覆盖**该方法。
   * 如果当前`Error`包含**子Error**,需要返回**子Error**：`Some(err)`,需要**覆盖**该方法。
 * `type_id()`该方法被隐藏。
 * `backtrace()`返回发生此错误的堆栈追溯，因为标记`unstable`，在`Rust`的`stable`版本不被使用。
 * 自定义的`Error`需要**impl std::fmt::Debug**的trait,当然我们只需要在默认对象上添加注解：`#[derive(Debug)]`即可。
 
+
 总结一下，自定义一个`error`需要实现如下几步：
+
 * 手动实现impl `std::fmt::Display`的trait,并**实现** `fmt(...)`方法。
 * 手动实现impl `std::fmt::Debug`的`trait`，一般直接添加注解即可：`#[derive(Debug)]`
 * 手动实现impl `std::error::Error`的`trait`,并根据自身`error`级别是否**覆盖**`std::error::Error`中的`source()`方法。
@@ -299,6 +302,7 @@ fn to_u32(v: &str) -> Result<u32, std::num::ParseIntError> {
 ```
 
 最终，我们得到`u32`的数字，对于该场景如何组织我们代码呢？
+
 * 1. `unwrap()`直接打开三个方法，取出值。这种方式太暴力，并且会有`bug`,造成程序`panic`,不被采纳。
 * 2. `match`匹配，如何返回OK,继续下一步，否则报错终止逻辑，那我们试试。
 
@@ -490,6 +494,7 @@ fn main() -> Result<(),CustomError>{
 }
 ```
 我们使用了`?`来替代原来的`match`匹配的方式。`?`使用问号作用在函数的结束，意思是：
+
 * 程序接受了一个`Result<(),CustomError>`自定义的错误类型。
 * 当前如果函数结果错误，程序自动抛出`Err`自身错误类型，并包含相关自己类型错误信息，因为我们做了`From`转换的操作，该函数的自身类型错误会通过实现的`From`操作自动转化为`CustomError`的自定义类型错误。
 * 当前如果函数结果正确，继续之后逻辑，直到程序结束。
@@ -499,6 +504,7 @@ fn main() -> Result<(),CustomError>{
 还记得我们之前讨论在对比`golang`的错误处理时的:`if err!=nil`的逻辑了吗，这种因为用了`?`语法糖使得该段判断将不再存在。
 
 另外，我们还注意到，`Result`的结果可以作用在`main`函数上，
+
 * 是的，`Result`的结果不仅能作用在`main`函数上
 * `Result`还可以作用在单元测试上，这就是我们文中刚开始提到的：因为有了`Result`的作用，使得我们在程序中几乎可以完全摒弃`unwrap()`的代码块，使得程序更轻，大大减少潜在问题，程序组织结构更加清晰。
   
@@ -705,12 +711,16 @@ fn read_file(path: &str) -> Result<String, std::io::Error> {
 到这里，`unwrap()`的代码片在项目中应该可以规避了。补充下，这里强调了几次规避，就如前所言：**团队风格统一，方便管理代码，消除潜在危机**。
 
 ## 10. 自定义Error同级转换
-我们在项目中，一个函数（方法）内部会有多次`Result`的结果判断：`?`,假设我们自定义的全局Error名称为：`GlobalError`
+我们在项目中，一个函数（方法）内部会有多次`Result`的结果判断：`?`,假设我们自定义的全局Error名称为：`GlobalError`。
+
 这时候，如果全局有一个`Error`可能就会出现如下错误：
+
 ```rust
 std::convert::From<error::GlobalError<A>>` is not implemented for `error::GlobalError<B>
 ```
+
 意思是：我们自定义的`GlobalError`没有通过From<GlobalError<T>>转换我们自己自定义的`GlobalError`，那这样，就等于**自己转换自己**。注意：
+
 * 第一：这是我们不期望这样做的。
 * 第二：遇到这种自己转换自己的`T`类型很多，我们不可能把出现的`T`类型通通实现一遍。
 这时候，我们考虑自定义另一个Error了，假设我们视为：`InnnerError`,我们全局的Error取名为：`GlobalError`，我们在遇到上面错误时，返回`Result<T,InnerError>`,这样我们遇到`Result<T,GlobalError>`时，只需要通过`From<T>`转换即可，代码示例如下：
