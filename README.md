@@ -159,9 +159,9 @@ pub enum Result<T, E> {
 
 
 ## 5. Rust中的错误处理
-前面不管是`golang`还是`Rust`采用`return`返回值方式，都是为了解决程序中错误处理的问题。好了，前面说了这么多，我们还是回归正题：Rust中是如何对错误进行处理的？
+前面不管是`golang`还是`Rust`采用`return`返回值方式，两者都是为了解决程序中错误处理的问题。好了，前面说了这么多，我们还是回归正题：Rust中是如何对错误进行处理的？
 
-要想细致了解`Rust`的错误处理，我们需要了解`std::error::Error`，该trait的内部方法，代码如下：
+要想细致了解`Rust`的错误处理，我们需要了解`std::error::Error`，该trait的内部方法，部分代码如下：
 参考链接：[https://doc.rust-lang.org/std/error/trait.Error.html](https://doc.rust-lang.org/std/error/trait.Error.html)
 
 ```rust
@@ -192,19 +192,19 @@ pub trait Error: Debug + Display {
 }
 ```
 
-* `description()`在文档介绍中，尽管使用它不会导致编译警告，但新代码应该实现`impl Display` ，新impl的可以省略，不用实现该方法, 要获取字符串形式的错误描述，请使用`to_string()`。
-* `cause()`在**1.33.0**被抛弃，取而代之使用`source`方法，新impl的不用实现该方法。
-* `source()`此错误的低级源，如果有返回：`Some(e)`,如果没有返回：`None`。
-  * 如果当前`Error`是低级别的`Error`,并没有**子Error**,需要返回`None`。介于其本身默认有返回值`None`，可以不**覆盖**该方法。
+* `description()`在文档介绍中，尽管使用它不会导致编译警告，但新代码应该实现`impl Display` ，新`impl`的可以省略，不用实现该方法, 要获取字符串形式的错误描述，请使用`to_string()`。
+* `cause()`在**1.33.0**被抛弃，取而代之使用`source()`方法，新`impl`的不用实现该方法。
+* `source()`此错误的低级源，如果内部有错误类型`Err`返回：`Some(e)`,如果没有返回：`None`。
+  * 如果当前`Error`是低级别的`Error`,并没有**子Error**,需要返回`None`。介于其本身默认有返回值`None`，可以**不覆盖**该方法。
   * 如果当前`Error`包含**子Error**,需要返回**子Error**：`Some(err)`,需要**覆盖**该方法。
 * `type_id()`该方法被隐藏。
 * `backtrace()`返回发生此错误的堆栈追溯，因为标记`unstable`，在`Rust`的`stable`版本不被使用。
-* 自定义的`Error`需要**impl std::fmt::Debug**的trait,当然我们只需要在默认对象上添加注解：`#[derive(Debug)]`即可
+* 自定义的`Error`需要**impl std::fmt::Debug**的trait,当然我们只需要在默认对象上添加注解：`#[derive(Debug)]`即可。
 
 总结一下，自定义一个`error`需要实现如下几步：
 * 手动实现impl `std::fmt::Display`的trait,并**实现** `fmt(...)`方法。
 * 手动实现impl `std::fmt::Debug`的`trait`，一般直接添加注解即可：`#[derive(Debug)]`
-* 手动实现impl `std::error::Error`的`trait`,并根据自身`error`级别是否**覆盖**`std::error::Error`中的`source`方法。
+* 手动实现impl `std::error::Error`的`trait`,并根据自身`error`级别是否**覆盖**`std::error::Error`中的`source()`方法。
 
 下面我们自己手动实现下`Rust`的**自定义Error**
 ```rust
