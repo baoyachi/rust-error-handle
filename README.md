@@ -670,7 +670,7 @@ impl<T> Option<T> {
 延伸链接：[https://stackoverflow.com/questions/59568278/why-does-the-operator-report-the-error-the-trait-bound-noneerror-error-is-no](https://stackoverflow.com/questions/59568278/why-does-the-operator-report-the-error-the-trait-bound-noneerror-error-is-no)
 
 ## 9. 避免unwrap()
-有人肯定会有疑问，如果需要判断的逻辑，又不用`?`这种操作，怎么取出`Option`或`Result`的数据呢，当然点子总比办法多，我们来看下：
+有人肯定会有疑问，如果需要判断的逻辑，又不用`?`这种操作，怎么取出`Option`或`Result`的数据呢，当然点子总比办法多，我们来看下`Option`如何做的：
 ```rust
 fn main() {
     if let Some(v) = opt_val(60) {
@@ -699,9 +699,9 @@ fn read_file(path: &str) -> Result<String, std::io::Error> {
     std::fs::read_to_string(path)
 }
 ```
-只不过，在处理`Result`的判断时，使用的是`if let Ok(v)`，这个和`Option`有所不同。
+只不过，在处理`Result`的判断时，使用的是`if let Ok(v)`，这个和`Option`的`if let Some(v)`有所不同。
 
-到这里，`unwrap()`的代码片在项目中应该可以规避了。补充下，这里强调了几次规避，就如前所言：**团队风格统一，方便管理代码，消除潜在危机**
+到这里，`unwrap()`的代码片在项目中应该可以规避了。补充下，这里强调了几次规避，就如前所言：**团队风格统一，方便管理代码，消除潜在危机**。
 
 ## 10. 自定义Error同级转换
 我们在项目中，一个函数（方法）内部会有多次`Result`的结果判断：`?`,假设我们自定义的全局Error名称为：`GlobalError`
