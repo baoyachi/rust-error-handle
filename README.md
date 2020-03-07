@@ -79,7 +79,7 @@ note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose bac
 可能有人会问，我们通常跑程序**unit test**，其中的很多**mock**数据会有 **unwrap()** 的操作，我们只是为了在单元测试中使得程序简单。这种也能不使用吗？答案：是的，完全可以不使用 **unwrap()** 也可以做到的。
 
 ## 4. 对比语言处理错误
-说到unwrap()，我们不得不提到`rust`的错误处理，**unwrap()** 和`Rust`的错误处理是密不可分的。
+说到**unwrap()**，我们不得不提到`rust`的错误处理，**unwrap()** 和`Rust`的错误处理是密不可分的。
 
 ### 4.1 golang的错误处理演示
 
@@ -114,7 +114,7 @@ func readFile(path string) (string, error) {
 2020/02/24 01:24:04 open /tmp/dat: no such file or directory
 ```
 
-这里，`golang`采用多返回值方式，程序报错返回错误问题，通过判断**err!=nil**来决定程序是否继续执行或终止该逻辑。当然，如果接触过`golang`项目时，会发现程序中大量充斥着`if err!=nil`的代码，对此 网上有对`if err!=nil`进行了很多讨论，因为这个不在本篇文章的目标中，我们不对其追溯、讨论。
+这里，`golang`采用多返回值方式，程序报错返回错误问题，通过判断 **err!=nil** 来决定程序是否继续执行或终止该逻辑。当然，如果接触过`golang`项目时，会发现程序中大量充斥着`if err!=nil`的代码，对此网上有对`if err!=nil`进行了很多讨论，因为这个不在本篇文章的范畴中，在此不对其追溯、讨论。
 
 ### 4.2 Rust 错误处理示例
 对比了`golang`代码，我们对照上面的例子，看下在`Rust`中如何编写这段程序，代码如下：
