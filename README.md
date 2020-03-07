@@ -206,7 +206,7 @@ pub trait Error: Debug + Display {
 * 手动实现impl `std::fmt::Debug`的`trait`，一般直接添加注解即可：`#[derive(Debug)]`
 * 手动实现impl `std::error::Error`的`trait`,并根据自身`error`级别是否**覆盖**`std::error::Error`中的`source()`方法。
 
-下面我们自己手动实现下`Rust`的**自定义Error**
+下面我们自己手动实现下`Rust`的**自定义错误:CustomError**
 ```rust
 use std::error::Error;
 
