@@ -568,7 +568,7 @@ fn to_u32(v: &str) -> IResult<u32> {
 ```
 将`std::result::Result<I, CustomError>` 替换为：`IResult<I>`类型
 
-当然，会有人提问，如果是多参数类型怎么处理呢，同样，我们只需将`OK`类型变成元祖`(...)`类型的多参数数据即可，大概这样：
+当然，会有人提问，如果是多参数类型怎么处理呢，同样，我们只需将`OK`类型变成 **tuple** `(I,O)`类型的多参数数据即可，大概这样：
 ```rust
 pub type IResult<I, O> = std::result::Result<(I, O), CustomError>;
 ```
