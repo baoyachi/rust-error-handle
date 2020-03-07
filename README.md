@@ -119,8 +119,6 @@ func readFile(path string) (string, error) {
 ### 4.2 Rust 错误处理示例
 对比了`golang`代码，我们对照上面的例子，看下在`Rust`中如何编写这段程序，代码如下：
 ```rust
-use std::io::Error;
-
 fn main() {
     let path = "/tmp/dat";  //文件路径
     match read_file(path) { //判断方法结果
@@ -129,7 +127,7 @@ fn main() {
     }
 }
 
-fn read_file(path: &str) -> Result<String,Error> { //Result作为结果返回值
+fn read_file(path: &str) -> Result<String,std::io::Error> { //Result作为结果返回值
     std::fs::read_to_string(path) //读取文件内容
 }
 ```
@@ -138,7 +136,8 @@ fn read_file(path: &str) -> Result<String,Error> { //Result作为结果返回值
 No such file or directory (os error 2)
 ```
 
-在`Rust`代表中，`Result`是一个`enum`枚举对象：
+在`Rust`代表中，`Result`是一个`enum`枚举对象,部分源码如下：
+
 ```rust
 pub enum Result<T, E> {
     /// Contains the success value
@@ -148,12 +147,12 @@ pub enum Result<T, E> {
     Err(#[stable(feature = "rust1", since = "1.0.0")] E),
 }
 ```
-通常我们使用`Result`的枚举对象作为程序的返回值，通过`Result`来判断其结果，我们使用`match`匹配的方式来获取`Result`的内容，是正常或错误。
+通常我们使用`Result`的枚举对象作为程序的返回值，通过`Result`来判断其结果，我们使用`match`匹配的方式来获取`Result`的内容，判断正常（Ok）或错误(Err)。
 
 或许，我们大致向上看去，`golang`代码和`Rust`代码没有本质区别，都是采用返回值方式，给出程序结果。下面我们就对比两种语言说说之间区别：
-* `golang`采用多返回值方式，我们在拿到目标结果时（上面是指文件内容*file*），需要首先对`err`判断是否为`nil`,并且我们在`return`时，需要给**多返回值**分别赋值，调用时要对 `if err!=nil`做结果判断。
-* `Rust`中采用`Result`的枚举对象做结果返回。枚举的好处是：多选一。因为`Result`的枚举类型为`Ok`和`Err`，使得我们每次在返回`Result`的结果时，要么是`Ok`,要么是`Err`。它不需要`return`结果同时给两个值赋值，这样的情况只会存在一种可能性: **Ok or Err**
-* golang的函数调用需要对 `if err!=nil`做结果判断，因为这段代码 判断是**手动逻辑**，往往我们可能因为疏忽，导致这段逻辑缺失，缺少校验，当前我们在期间可以通过某些工具`lint`扫描出这种潜在bug。
+* `golang`采用多返回值方式，我们在拿到目标结果时（上面是指文件内容*file*），需要首先对`err`判断是否为`nil`,并且我们在`return`时，需要给**多返回值**分别赋值，调用时需要对 `if err!=nil` 做结果判断。
+* `Rust`中采用`Result`的枚举对象做结果返回。枚举的好处是：多选一。因为`Result`的枚举类型为`Ok`和`Err`，使得我们每次在返回`Result`的结果时，要么是`Ok`,要么是`Err`。它不需要`return`结果同时给两个值赋值，这样的情况只会存在一种可能性: **Ok or Err** 。
+* golang的函数调用需要对 `if err!=nil`做结果判断，因为这段代码 判断是**手动逻辑**，往往我们可能因为疏忽，导致这段逻辑缺失，缺少校验。当然，我们在编写代码期间可以通过某些工具 `lint` 扫描出这种潜在bug。
 * `Rust`的`match`判断是自动打开，当然你也可以选择忽略其中某一个枚举值,我们不在此说明。
 
 可能有人发现，如果我有多个函数，需要多个函数的执行结果，这样需要`match`代码多次，代码会不会是一坨一坨，显得代码很臃肿，难看。是的，这个问题提出的的确是有这种问题，不过这个在后面我们讲解的时候，会通过程序语法糖避免多次`match`多次结果的问题，不过我们在此先不叙说，后面将有介绍。
