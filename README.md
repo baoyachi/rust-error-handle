@@ -725,6 +725,7 @@ impl From<InnerError> for GlobalError {
 上面说的这种情况，可能会在项目中出现**多个自定义Error**,出现这种情况时，存在多个不同Error的`std::result::Result<T,Err>`的返回。这里的`Err`就可以根据我们业务现状分别反回不同类型了。最终，只要实现了`From<T>`的`trait`可转化为最终期望结果。
 
 ## 11. Error常见开源库
+好了，介绍到这里，我们应该有了非常清晰的认知：关于如何处理`Rust`的错误处理问题了。但是想想上面的这些逻辑多数是模板代码，我们在实际中，大可不必将这样。说到这里，开源社区也有了很多对错误处理库的支持，下面列举了一些：
 * [https://github.com/rust-lang-nursery/failure](https://github.com/rust-lang-nursery/failure)
 * [https://github.com/rust-lang-nursery/error-chain](https://github.com/rust-lang-nursery/error-chain)
 * [https://github.com/dtolnay/anyhow](https://github.com/dtolnay/anyhow)
@@ -740,7 +741,7 @@ impl From<InnerError> for GlobalError {
 * [https://github.com/rust-lang/rust/issues/43301](https://github.com/rust-lang/rust/issues/43301)
 
 ## 13 错误处理实战
-这个例子介绍了如何在`https://github.com/Geal/nom`中处理错误，这里就不展开介绍了。
+这个例子介绍了如何在`https://github.com/Geal/nom`中处理错误，这里就不展开介绍了，有兴趣的可自行阅读代码。
 
 详细见链接：[https://github.com/baoyachi/rust-error-handle/blob/master/src/demo_nom_error_handle.rs](https://github.com/baoyachi/rust-error-handle/blob/master/src/demo_nom_error_handle.rs)
 
